@@ -91,6 +91,7 @@ const reset = () => {
   clearInterval(countdownActive);
   countdownTitle = '';
   countdownDate = '';
+  localStorage.removeItem('countdown');
 }
 
 const restorePrevCountdown = () => {
