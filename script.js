@@ -1,10 +1,15 @@
 const inputContainer = document.getElementById('input-container');
 const countdownForm = document.getElementById('countdown-form');
 const dateElement = document.getElementById('date-picker');
+
 const countdownElement = document.getElementById('countdown');
 const countdownTitleElement = document.getElementById('countdown-title');
 const countdownButton = document.getElementById('countdown-button');
 const timeElements = document.querySelectorAll('span');
+
+const completeElement = document.getElementById('complete');
+const completeElementInfo = document.getElementById('complete-info');
+const completeButton = document.getElementById('complete-button');
 
 let countdownTitle = '';
 let countdownDate = '';
@@ -32,6 +37,16 @@ const updateDOM = () => {
     const minutes = Math.floor((distance % hour) / minute);
     const seconds = Math.floor((distance % minute) / second);
 
+    // Hide Input Container
+    inputContainer.hidden = true;
+
+    // If the countdown has ended, show complete
+    if (distance < 0) {
+      countdownElement.hidden = true;
+      clearInterval(countdownActive);
+      completeElementInfo.textContent = `${countdownTitle} finished on ${countdownDate}`;
+      completeElement.hidden = false;
+    } else {
     // Populate Countdown
     countdownTitleElement.textContent = `${countdownTitle}`;
     timeElements[0].textContent = `${days}`;
@@ -39,10 +54,11 @@ const updateDOM = () => {
     timeElements[2].textContent = `${minutes}`;
     timeElements[3].textContent = `${seconds}`;
 
-    // Hide Input Container
-    inputContainer.hidden = true;
     // Show Countdown
-    countdownElement.hidden = false;
+    countdownElement.hidden = false;   
+    completeElement.hidden = true;   
+    }
+
   }, second);
 }
 
@@ -63,7 +79,9 @@ const updateCountdown = (evt) => {
 // Reset Values
 const reset = () => {
   countdownElement.hidden = true;
+  completeElement.hidden = true;
   inputContainer.hidden = false;
+  
   clearInterval(countdownActive);
   countdownTitle = '';
   countdownDate = '';
@@ -72,3 +90,4 @@ const reset = () => {
 // Event Listener
 countdownForm.addEventListener('submit', updateCountdown);
 countdownButton.addEventListener('click', reset);
+completeButton.addEventListener('click', reset);
